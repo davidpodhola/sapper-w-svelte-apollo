@@ -5,15 +5,13 @@ import fetch from 'cross-fetch'
 const cache = new InMemoryCache();
 const link =  createHttpLink({
     uri: 'https://graphqlzero.almansi.me/api',
-    fetch,
+    fetch,  
 });
 
 export default new ApolloClient({
   // Provide required constructor fields
   cache,
   link,
-  // Provide some optional constructor fields
-  version: '1.3',
   queryDeduplication: false,
   defaultOptions: {
     watchQuery: {
