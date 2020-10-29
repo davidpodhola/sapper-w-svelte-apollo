@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { query } from "svelte-apollo";
+  import { mutation, query } from "svelte-apollo";
   import { gql } from "@apollo/client";
   const EVERYTHING = gql`
     {
@@ -13,12 +13,25 @@
     }
   `;
 
+  const ADD = gql`
+    {
+      createTodo(input: { title: "test 123", completed: false }) {
+        id
+      }
+    }
+  `;
+
   const todos = query(EVERYTHING, {
     // variables, fetchPolicy, errorPolicy, and others
   });
 
   function reload() {
     todos.refetch();
+  }
+
+  const add = async () => {
+    const addTodo = mutation(ADD);
+    await addTodo({});
   }
 </script>
 
@@ -35,3 +48,4 @@
 </ul>
 
 <button on:click={reload}>Reload</button>
+<button on:click={add}>Add</button>
