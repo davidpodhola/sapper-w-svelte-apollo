@@ -1,10 +1,9 @@
-<script context="module" lang="ts">
-  import client from "../lib/apollo";
+<script lang="ts">
+  import { mutation, query } from "svelte-apollo";
   import { gql } from "@apollo/client";
-
   const EVERYTHING = gql`
     {
-      todos(options: { sort: { field: "id" }, paginate: { limit: 12 } }) {
+      todos {
         data {
           id
           title
@@ -14,23 +13,8 @@
     }
   `;
 
-  export async function preload() {
-    return {
-      cache: await client.query({
-        query: EVERYTHING,
-      }),
-    };
-  }
-</script>
-
-<script lang="ts">
-  import { mutation, query, restore } from "svelte-apollo";
-
-  export let cache;
-  restore(EVERYTHING, { data: cache.data });
-
   const ADD = gql`
-    mutation {
+    {
       createTodo(input: { title: "test 123", completed: false }) {
         id
       }
@@ -45,15 +29,9 @@
     todos.refetch();
   }
 
-  const addTodo = mutation(ADD);
-
-  async function add() {
-    try {
-      await addTodo({});
-    } catch (error) {
-      // TODO
-      console.log(error);
-    }
+  const add = async () => {
+    const addTodo = mutation(ADD);
+    await addTodo({});
   }
 </script>
 
