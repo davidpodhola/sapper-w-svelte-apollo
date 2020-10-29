@@ -14,12 +14,13 @@
   `;
 
   const ADD = gql`
-    {
+    mutation {
       createTodo(input: { title: "test 123", completed: false }) {
         id
       }
     }
   `;
+  const addTodo = mutation(ADD);
 
   const todos = query(EVERYTHING, {
     // variables, fetchPolicy, errorPolicy, and others
@@ -30,7 +31,6 @@
   }
 
   const add = async () => {
-    const addTodo = mutation(ADD);
     await addTodo({});
   }
 </script>
